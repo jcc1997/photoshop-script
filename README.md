@@ -1,6 +1,8 @@
 # photoshop
 ___
 
+fork from [after-effects](github.com/BenGaumond/after-effects) and modified to be compatible with photoshop.
+
 ## Why?
 * You're running a node.js server with After Effects installed, and you'd like to run render commands server-side.
 
