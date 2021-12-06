@@ -1,4 +1,4 @@
-# photoshop
+# photoshop-script
 ___
 
 fork from [after-effects](github.com/BenGaumond/after-effects) and modified to be compatible with photoshop.
