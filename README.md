@@ -1,9 +1,11 @@
 # photoshop-script
+
 ___
 
 fork from [after-effects](github.com/BenGaumond/after-effects) and modified to be compatible with photoshop.
 
 ## Why?
+
 * You're running a node.js server with After Effects installed, and you'd like to run render commands server-side.
 
 * You use node.js locally, and prefer not to run PS scripts with the ExtendScript toolkit.
@@ -13,15 +15,18 @@ fork from [after-effects](github.com/BenGaumond/after-effects) and modified to b
 * Because it angers your religious mother, and you want to be rebellious.
 
 ## Requirements
+
 Obviously, you need After Effects installed on your machine.
 Additionally, in your After Effects preferences, enable:
 
 *Preferences -> General -> Allow Scripts to Write Files and Access Network*
 
 ___
+
 ## Basic Usage
 
     var ps = require("photoshop");
+
 _Ta Daaaa_. The rest of this readme assumes ps is the after effects module.
 
 To execute some code in After Effects:
@@ -32,7 +37,9 @@ _What fun!_
 
 Provided that After Effects is installed in your Applications/Program directory, and that you haven't renamed any of the folders or something, this will work.
 ___
+
 ## Scripting Considerations
+
 The After Effects scripting environment is a completely different engine than node.js. Node.js has no access to the After Effects environment, and vice versa:
 
     var foo = "bar";
@@ -61,6 +68,7 @@ You can also retrieve data from After Effects with the same restriction:
 
 Also see the [After Effects Scripting Guide](http://blogs.adobe.com/aftereffects/files/2012/06/photoshop-CS6-Scripting-Guide.pdf) for information about the After Effects Javascript API.
 ___
+
 ## Sync vs Async
 
 The default shortcut function will run the code synchronously and block NodeJS until complete, however, you can also send code to After Effects asynchronously:
@@ -83,21 +91,26 @@ The default shortcut function actually is just a shortcut to ps.executeSync:
     ps(save_current_project);
 
 ___
+
 ## Options
+
 The ps object has a couple of options:
 
-	ps.options.errorHandling = true;
-	ps.options.minify = false;
-    ps.options.program = null;
-	ps.options.includes = [
-		'./node_modules/photoshop/lib/includes/console.jsx',
-		'./node_modules/photoshop/lib/includes/es5-shim.jsx',
-		'./node_modules/photoshop/lib/includes/get.jsx'
-	]
+```
+ps.options.errorHandling = true;
+ps.options.minify = false;
+ps.options.program = null;
+ps.options.includes = [
+    './node_modules/photoshop/lib/includes/console.jsx',
+    './node_modules/photoshop/lib/includes/es5-shim.jsx',
+    './node_modules/photoshop/lib/includes/get.jsx'
+]
+```
 
 This would be how you set defaults.
 
 ### errorHandling
+
 With errorHandling enabled, errors thrown in After Effects will be suppressed and returned in the promise result:
 
     ps.options.errorHandling = true;
@@ -109,11 +122,13 @@ With errorHandling enabled, errors thrown in After Effects will be suppressed an
 With errorHandling disabled, After Effects will create a popup and prevent further code execution until it is dealt with.
 
 ### minify
+
 If true, the code will be minified before being sent to After Effects. This is disabled by default, which is different from previous versions of this package. I feel there's little point in spending the extra time to minify code that isn't going over a network. Still, you can set minify to true if you're into that sort of thing.
 
     ps.options.minify = true;
 
 ### program
+
 By default, ps will look for an After Effects installation in your platforms default application directory. If you've installed it elsewhere, you'll have to set this to the custom app directory.
 
     ps.options.program = path.join('OtherAppDirectory','Adobe After Effects 2015');
@@ -121,6 +136,7 @@ By default, ps will look for an After Effects installation in your platforms def
 Also handy if you've installed multiple versions of After Effects on your machine, and you'd like to target a specific one.
 
 ### includes
+
 Includes is an array which will concatanate the code from other files into your command, for use inside After Effects.
 The defaults are as follows:
 
@@ -138,7 +154,7 @@ The javascript environment within After Effects is very dated, pre ES5. With es5
 
 Also notice that you can use ES6 syntax when executing code. It's parsed through [babel](https://www.npmjs.com/package/babel) before being sent to After Effects.
 
-##### _get.js_
+<!-- ##### _get.js_
 Provides a jQuery inspired selector object to work with items in After Effects inside of an object called 'get':
 
     ps.execute(() => {
@@ -148,12 +164,14 @@ Provides a jQuery inspired selector object to work with items in After Effects i
            .each(comp => alert(comp.name));
     });
 
-See the API for the get object below.
+See the API for the get object below. -->
 
 ### Include Considerations
+
 The default options exist in their current state to benefit quickstarting. I just want to fire up atom and run an ps command without thinking too much about it. That said, there are a couple of things you can do to optimize it's usage.
 
 #### _Persistent Environment_
+
 The scripting environment inside After Effects persists between executions, unless
 you manually reset it or restart After Effects.
 
@@ -180,9 +198,11 @@ There is a convenience method to get the scripts directory associated with the c
 This will throw an error if After Effects can't be found. This is useful if you want to include any scripts in the Scripts Directory that might exist.
 
 #### _Startup Folder_
+
 Alternatively, You can copy the scripts provided in the lib folder to the After Scripts/Startup folder inside your After Effects installation. Then will be run and added to the global namespace when After Effects is starting, and will not have to be included while executing commands from ps.
 
 #### _.jsx vs .js_
+
 If you just installed After Effects, you'll notice that all of the files in the Scripts Directory end in .jsx
 If you're familiar with React, you're probably wondering what the hell they're doing there. Well, long before Facebooks React, Adobe's primary javascript format was .jsx. This is because the Adobe javascript Engine has an xml literal built into it:
 
@@ -191,6 +211,7 @@ If you're familiar with React, you're probably wondering what the hell they're d
 We can't take advantage of that xml literal inside nodejs because babel doesn't have a preset for it. As a result, if you try to include a .jsx file, ps will assume it's written in Adobe Javascript. ps will not babelify or minify it, otherwise it will could cause errors if the XML literal was used.
 
 ___
+
 ## Advanced Usage
 
 If you're going to execute a particular method frequently, you can precompile it as a command, which will prevent it from having to be babelified or minified again:
@@ -213,7 +234,8 @@ Commands, once made, can be executed with different arguments:
 Commands have their own set of options. By default, they are the same as the options set on ps.options:
 
     ps.options.minify = true;
-    var getNumItems = new ps.Command(() => app.project.numItems); //will minify
+
+    var getNumItems = new ps. Command(() => app.project.numItems); //will minify
 
 Command options cannot be changed:
 
@@ -221,14 +243,18 @@ Command options cannot be changed:
     var breakForFun = new ps.Command(() => throw("This is MY house."));
 
     ps.options.errorHandling = true;
+
     breakForFun.executeSync(); // will still alert inside in PS
     breakForFun.errorHandling = true; //throws error
 
 You can create commands with their own options:
 
     var getProjectName = new ps.Command(()=> app.project.file.name, { includes: null, minify: true });
+
 ___
+
 ## Creating Scripts
+
 Rather than executing code, you can create scripts for use in After Effects:
 
      ps.create(() => {
@@ -249,8 +275,9 @@ This script will be available for After Effects to use in it's scripts folder. T
 If you'd like to place scripts somewhere other than the scripts folder, you can pass an absolute path:
 
      ps.create(() => {
-        app.project.activeItem.remove();
-     }, path.join(__dirname, "Created Scripts", "DeleteActiveItem.jsx"));
+
+        app.project.activeItem.remove(); 
+     }, path.join(__dirname, "Created Scripts", "DeleteActiveItem.jsx")); 
 
 You can also create a script out of a command, with baked arguments:
 
@@ -259,10 +286,10 @@ You can also create a script out of a command, with baked arguments:
 
 If you don't provide a filetype exention scripts will be created as .jsx by default. After Effects doesn't care what the filetype extension is, but you might as well leave it as .jsx by convention.
 
-You can also create scripts syncronously with ps.createSync();
+You can also create scripts syncronously with ps.createSync(); 
 
 ___
-## 'get' API
+<!-- ## 'get' API
 
 The **get** method (if enabled) is a jQuery inspired selector object to work with items in After Effects.
 
@@ -271,12 +298,15 @@ It parses arguments of various types into three kinds of information in order to
 ### Argument Types
 
 #### Type
+
 Quite simply, type arguments narrow down what types of objects can be selected. Constructors for Compositions, Folder, Layers or Properties can be passed in as types.
 
 #### Context
+
 Context arguments provide the scope of objects to select from. ItemCollections, LayerCollections, QueryResults or Arrays of instances of each can be passed in as contexts.
 
 #### Selector
+
 Selector arguments fine tune what the results of a selection. Strings, Regular Expressions, Numbers or Functions can be passed as selectors.
 
 ### Making Selections
@@ -324,7 +354,7 @@ Providing multiple types can get wordy. You can provide arrays of pre-arranged t
     var allLayers = get(allLayerTypes);
     var allRedLayers = get(1, allLayers);
 
-Or you can use shortcuts on the get object;
+Or you can use shortcuts on the get object; 
 
     var allRedLayers = get.layers(1);
     var itemsNamedFinal = get.items("Final");
@@ -348,6 +378,7 @@ Functions can also be used as selectors:
     var sel = get.folders(fold => fold.numItems > 5)
                         .children(CompItem)
                         .children(lay => lay.inPoint < 0.5);
+
 ### Working with Selections
 
 Selections can be unboxed, to get an array of the elements inside:
@@ -372,7 +403,7 @@ There are also methods on a queryResult that can be used on the selections:
     //.call looks for a matching method name, and calls it with any provided arguments
     get.comps().call("setProxyToNone");
 
-___
+___ -->
 
 # Version 0.4.0
 

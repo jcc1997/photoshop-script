@@ -7,6 +7,10 @@
   "keywords": [
     "photoshop"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcc1997/photoshop-script"
+  },
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.4.5",
