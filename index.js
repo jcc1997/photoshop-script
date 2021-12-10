@@ -22,10 +22,10 @@ const Errors = {
   NoResult : 'Could not get results from Photoshop. Ensure that Preferences > General > Allow Scripts to Write Files and Access Network is enabled.'
 };
 
-class AfterEffectsError extends Error {
+class PhotoshopError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'AfterEffectsError';
+    this.name = 'PhotoshopError';
   }
 }
 
@@ -158,7 +158,7 @@ function execute(/*args*/) {
       reject(Errors.NoResult);
 
     if (is(results.returned, Error))
-      reject(new AfterEffectsError(results.returned.message));
+      reject(new PhotoshopError(results.returned.message));
     else
       resolve(results.returned);
   }));
@@ -181,7 +181,7 @@ function executeSync(/*args*/) {
     throw new Error(Errors.NoResult);
 
   if (is(results.returned, Error))
-    throw new AfterEffectsError(results.returned.message);
+    throw new PhotoshopError(results.returned.message);
   else
     return results.returned;
 }
