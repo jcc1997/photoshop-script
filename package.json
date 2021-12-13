@@ -1,6 +1,6 @@
 {
   "name": "photoshop-script",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Send instructions to the Photoshop scripting environment from node.js.",
   "main": "index.js",
   "scripts": {},

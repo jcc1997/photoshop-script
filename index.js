@@ -119,14 +119,16 @@ function get_results(command) {
     const jsfile = path.join(os.tmpdir(), '', command.result_file);
     results = require(jsfile);
 
-    fs.unlink(jsfile, function(err) {
-      if (err)
-        console.error (err);
+    setTimeout(() => {
+      fs.unlink(jsfile, function(err) {
+        if (err)
+          console.error (err);
+      });
     });
 
     command.result_file = null;
   } catch (err) {
-
+    console.error(err);
     command.result_file = null;
     return err;
   }
